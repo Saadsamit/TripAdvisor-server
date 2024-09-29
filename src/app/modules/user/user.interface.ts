@@ -1,17 +1,25 @@
 /* eslint-disable no-unused-vars */
-import { Model } from "mongoose";
-import { userRole } from "../../const/user";
+import { Model } from 'mongoose';
+import { userRole } from '../../const/user';
+
+export type TUserRole = keyof typeof userRole;
+
+export type TUserLogin = {
+  email: string;
+  password: string;
+};
+
+export type TNewUser = {
+  name: string;
+  picture: string;
+} & TUserLogin;
 
 export type TUser = {
-  name: string;
-  email: string;
-  role:  keyof typeof userRole;
-  password: string;
-  picture: string;
+  role: TUserRole;
   posts: number;
   followers: number;
   following: number;
-};
+} & TNewUser;
 
 export interface TUserModel extends Model<TUser> {
   isPasswordMatched(
