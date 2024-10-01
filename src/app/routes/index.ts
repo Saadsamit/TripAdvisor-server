@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import basicRoute from '../modules/basic';
-import { userRoute } from '../modules/user/user.route';
 import { teamRoutes } from '../modules/Teams/team.routes';
+import { postRoutes } from '../modules/post/post.route';
+import { authRoute } from '../modules/auth/auth.route';
+import { userRoute } from '../modules/user/user.route';
 
 const router = Router();
 
@@ -11,12 +13,20 @@ const moduleRoutes = [
     route: basicRoute,
   },
   {
-    path: '/auth',
+    path: '/user',
     route: userRoute,
+  },
+  {
+    path: '/auth',
+    route: authRoute,
   },
   {
     path: '/team',
     route: teamRoutes,
+  },
+  {
+    path: '/post',
+    route: postRoutes,
   },
 ];
 

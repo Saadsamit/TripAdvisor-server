@@ -1,18 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { Model } from 'mongoose';
 import { userRole } from '../../const/user';
+import { TNewUser } from '../auth/auth.interface';
 
 export type TUserRole = keyof typeof userRole;
-
-export type TUserLogin = {
-  email: string;
-  password: string;
-};
-
-export type TNewUser = {
-  name: string;
-  picture: string;
-} & TUserLogin;
 
 export type TUser = {
   role: TUserRole;
