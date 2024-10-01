@@ -33,6 +33,10 @@ const userSchema = new Schema<TUser>(
       default: 'user',
       required: true,
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
     posts: {
       type: Number,
       default: 0,

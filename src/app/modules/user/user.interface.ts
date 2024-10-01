@@ -16,6 +16,7 @@ export type TNewUser = {
 
 export type TUser = {
   role: TUserRole;
+  verified: boolean;
   posts: number;
   followers: number;
   following: number;
