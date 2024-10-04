@@ -8,7 +8,7 @@ const getAllPostDB = async () => {
 
 const getAPostDB = async (id: string) => {
   const findData = await post.findById(id).populate('user');
-  return findData
+  return findData;
 };
 
 const createPostDB = async (payload: TPostData, id: string) => {
@@ -20,22 +20,31 @@ const createPostDB = async (payload: TPostData, id: string) => {
   return await newPost.save();
 };
 
+const updatePostDB = async (payload: TPostData, id: string) => {
+  return await post.findByIdAndUpdate(id, payload);
+};
+
+const deleteMyPostDB = async (id: string, userId: string) => {
+  await user.findByIdAndUpdate(userId, { $inc: { posts: -1 } });
+  return await post.findByIdAndDelete(id);
+};
+
 const likeAPostDB = async (id: string, userId: string) => {
   const isExist = await post.findOne({
     _id: id,
     upvote: { $in: [userId] },
   });
   if (!isExist) {
-     await post.findByIdAndUpdate(id, {
+    await post.findByIdAndUpdate(id, {
       $addToSet: { upvote: userId },
       $pull: { downvote: userId },
     });
-    return "upvote"
+    return 'upvote';
   }
   await post.findByIdAndUpdate(id, {
     $pull: { upvote: userId },
   });
-  return "upvote remove"
+  return 'upvote remove';
 };
 
 const dislikeAPostDB = async (id: string, userId: string) => {
@@ -44,16 +53,16 @@ const dislikeAPostDB = async (id: string, userId: string) => {
     downvote: { $in: [userId] },
   });
   if (!isExist) {
-   await post.findByIdAndUpdate(id, {
+    await post.findByIdAndUpdate(id, {
       $addToSet: { downvote: userId },
       $pull: { upvote: userId },
     });
-    return "downvote"
+    return 'downvote';
   }
   await post.findByIdAndUpdate(id, {
     $pull: { downvote: userId },
   });
-  return "downvote remove"
+  return 'downvote remove';
 };
 
 const followUserDB = async (followerId: string, followingId: string) => {
@@ -68,7 +77,7 @@ const followUserDB = async (followerId: string, followingId: string) => {
     await user.findByIdAndUpdate(followerId, {
       $addToSet: { followers: followingId },
     });
-    return "follow";
+    return 'follow';
   }
   await user.findByIdAndUpdate(followingId, {
     $pull: { following: followerId },
@@ -76,7 +85,7 @@ const followUserDB = async (followerId: string, followingId: string) => {
   await user.findByIdAndUpdate(followerId, {
     $pull: { followers: followingId },
   });
-  return "unfollow"
+  return 'unfollow';
 };
 
 const getMyPostDB = async (id: string) => {
@@ -88,7 +97,9 @@ export const postService = {
   getAPostDB,
   createPostDB,
   likeAPostDB,
+  deleteMyPostDB,
   getMyPostDB,
   dislikeAPostDB,
   followUserDB,
+  updatePostDB
 };

@@ -13,6 +13,10 @@ router.get('/my-posts', auth(userRole.user), postController.getMyPost);
 
 router.get('/:id', auth(), postController.getAPost);
 
+router.delete('/my-post/:id', auth(), postController.deleteMyPost);
+
+router.put('/my-post/:id', auth(), validateRequest(createPostSchemaValidation), postController.updateMyPost);
+
 router.post('/like/:id', auth(), postController.likeAPost);
 
 router.post('/dislike/:id', auth(), postController.dislikeAPost);

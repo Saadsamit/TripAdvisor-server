@@ -40,6 +40,32 @@ const createPost: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const updateMyPost: RequestHandler = catchAsync(async (req, res) => {
+  const payload = req.body;
+  const id = req.params.id;
+  const data = await postService.updatePostDB(payload, id);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'post update successfully',
+    data,
+  });
+});
+
+const deleteMyPost: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const userId = req.user.id;
+  const data = await postService.deleteMyPostDB(id, userId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'post deleted successfully',
+    data,
+  });
+});
+
 const likeAPost: RequestHandler = catchAsync(async (req, res) => {
   const id = req.params.id;
   const userId = req.user.id;
@@ -99,4 +125,6 @@ export const postController = {
   getMyPost,
   dislikeAPost,
   followUser,
+  deleteMyPost,
+  updateMyPost
 };
