@@ -13,6 +13,10 @@ const postSchema = new Schema<TPost>(
       ref: 'User',
       required: true,
     },
+    comments: {
+      type: Schema.Types.ObjectId,
+      ref: 'comment',
+    },
     upvote: {
       type: [Schema.Types.ObjectId],
       ref: 'User',

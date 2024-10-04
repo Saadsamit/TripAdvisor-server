@@ -8,4 +8,5 @@ export type TPostData = {
 export type TPost = {
   upvote: ObjectId[];
   downvote: ObjectId[];
+  comments: ObjectId;
 } & TPostData;

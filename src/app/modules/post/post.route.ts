@@ -11,7 +11,13 @@ router.get('/', postController.getAllPost);
 
 router.get('/my-posts', auth(userRole.user), postController.getMyPost);
 
-router.get('/:id', postController.getAPost);
+router.get('/:id', auth(), postController.getAPost);
+
+router.post('/like/:id', auth(), postController.likeAPost);
+
+router.post('/dislike/:id', auth(), postController.dislikeAPost);
+
+router.post('/follow/:followerId', auth(), postController.followUser);
 
 router.post('/create', auth(userRole.user), validateRequest(createPostSchemaValidation), postController.createPost);
 

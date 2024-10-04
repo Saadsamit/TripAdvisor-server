@@ -16,7 +16,7 @@ const getAllPost: RequestHandler = catchAsync(async (req, res) => {
 });
 
 const getAPost: RequestHandler = catchAsync(async (req, res) => {
-  const id = req.params.postId;
+  const id = req.params.id;
   const data = await postService.getAPostDB(id);
 
   sendResponse(res, {
@@ -40,6 +40,45 @@ const createPost: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const likeAPost: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const userId = req.user.id;
+  const data = await postService.likeAPostDB(id, userId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: `post ${data} successfully`,
+    data,
+  });
+});
+
+const dislikeAPost: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const userId = req.user.id;
+  const data = await postService.dislikeAPostDB(id, userId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: `post ${data} successfully`,
+    data,
+  });
+});
+
+const followUser: RequestHandler = catchAsync(async (req, res) => {
+  const followerId = req.params.followerId;
+  const followingId = req.user.id;
+  const data = await postService.followUserDB(followerId, followingId);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: `user ${data} successfully`,
+    data,
+  });
+});
+
 const getMyPost: RequestHandler = catchAsync(async (req, res) => {
   const id = req.user.id;
   const data = await postService.getMyPostDB(id);
@@ -56,5 +95,8 @@ export const postController = {
   getAllPost,
   getAPost,
   createPost,
+  likeAPost,
   getMyPost,
+  dislikeAPost,
+  followUser,
 };
