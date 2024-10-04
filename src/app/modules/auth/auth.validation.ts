@@ -16,6 +16,7 @@ const loginSchemaValidation = z.object({
   }),
 });
 
+
 const updateAccountSchemaValidation = z.object({
   body: z.object({
     name: z.string(),

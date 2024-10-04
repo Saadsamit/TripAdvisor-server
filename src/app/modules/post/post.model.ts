@@ -1,13 +1,33 @@
-import { model, Schema } from "mongoose";
-import { TPost } from "./post.interface";
+import { model, Schema } from 'mongoose';
+import { TPost } from './post.interface';
 
-const postSchema = new Schema<TPost>({
-    image: {
-        type: String,
-        required: true,
-        trim: true,
-      }
-})
+const postSchema = new Schema<TPost>(
+  {
+    post: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    upvote: {
+      type: [Schema.Types.ObjectId],
+      ref: 'User',
+      default: [],
+    },
+    downvote: {
+      type: [Schema.Types.ObjectId],
+      ref: 'User',
+      default: [],
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
 
 const post = model<TPost>('Post', postSchema);
 

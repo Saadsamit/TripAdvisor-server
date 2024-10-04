@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { userRole } from '../../const/user';
 import { TNewUser } from '../auth/auth.interface';
 
@@ -9,8 +9,8 @@ export type TUser = {
   role: TUserRole;
   verified: boolean;
   posts: number;
-  followers: number;
-  following: number;
+  followers: ObjectId[];
+  following: ObjectId[];
 } & TNewUser;
 
 export interface TUserModel extends Model<TUser> {

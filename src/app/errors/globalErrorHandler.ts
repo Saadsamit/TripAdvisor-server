@@ -16,6 +16,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
       message,
     },
   ];
+  console.log(err);
   if (err instanceof ZodError) {
     const simplifiedError = handleZodError(err);
     statusCode = simplifiedError.statusCode;

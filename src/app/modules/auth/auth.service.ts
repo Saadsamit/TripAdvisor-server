@@ -43,7 +43,19 @@ const updateAccountDB = async (req: Request) => {
   const { email } = req.user;
   const payload = req.body;
   const result = await user.findOneAndUpdate({ email }, payload);
-  return result;
+
+  const userData = {
+    _id: result?._id,
+    email: result?.email,
+    role: result?.role,
+    picture: result?.picture,
+    name: result?.name,
+  };
+  const token = jwt.sign(userData, config.jwt_access_secret as string, {
+    expiresIn: config.jwt_access_expires_in,
+  });
+
+  return { token, result };
 };
 
 const roleUpdateDB = async (req: Request) => {

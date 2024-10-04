@@ -26,7 +26,7 @@ route.post(
 route.put('/roleUpdate/:id', auth(userRole.admin), authController.roleUpdate);
 
 route.patch(
-  '/updateAccount',
+  '/update-profile',
   auth(),
   validateRequest(updateAccountSchemaValidation),
   authController.updateAccount,

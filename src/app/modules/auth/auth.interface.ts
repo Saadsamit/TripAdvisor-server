@@ -8,4 +8,3 @@ export type TNewUser = {
   name: string;
   picture: string;
 } & TUserLogin;
-

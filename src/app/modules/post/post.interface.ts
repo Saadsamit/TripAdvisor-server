@@ -1,5 +1,11 @@
+import { ObjectId } from 'mongoose';
 
+export type TPostData = {
+  post: string;
+  user: ObjectId;
+}
 
 export type TPost = {
-    image: string,
-  };
+  upvote: ObjectId[];
+  downvote: ObjectId[];
+} & TPostData;

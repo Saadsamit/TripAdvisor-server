@@ -27,13 +27,14 @@ const login = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateAccount = catchAsync(async (req: Request, res: Response) => {
-  const data = await authService.updateAccountDB(req);
+  const { token, result } = await authService.updateAccountDB(req);
 
   sendResponse(res, {
     success: true,
     statusCode: 200,
     message: 'User update successfully',
-    data: data,
+    data: result,
+    token
   });
 });
 

@@ -42,12 +42,12 @@ const userSchema = new Schema<TUser>(
       default: 0,
     },
     followers: {
-      type: Number,
-      default: 0,
+      type: [Schema.Types.ObjectId],
+      default: [],
     },
     following: {
-      type: Number,
-      default: 0,
+      type: [Schema.Types.ObjectId],
+      default: [],
     },
   },
   {
