@@ -13,6 +13,12 @@ const postSchema = new Schema<TPost>(
       ref: 'User',
       required: true,
     },
+    category:{
+      type: String,
+      required: true,
+      lowercase: true,
+      trim: true,
+    },
     comments: {
       type: Schema.Types.ObjectId,
       ref: 'comment',

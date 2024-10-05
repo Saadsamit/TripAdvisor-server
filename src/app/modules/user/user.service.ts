@@ -12,7 +12,14 @@ const allUserDB = async () => {
   return result;
 };
 
+const getAUserDB = async (req: Request) => {
+  const id = req.params.id;
+  const result = await user.findById(id);
+  return result;
+};
+
 export const userService = {
   myAccountDB,
   allUserDB,
+  getAUserDB,
 };

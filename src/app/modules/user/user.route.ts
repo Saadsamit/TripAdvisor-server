@@ -9,4 +9,6 @@ route.get('/all-user', auth(userRole.admin), userController.allUser);
 
 route.get('/my-profile', auth(), userController.myAccount);
 
+route.get('/:id', auth(), userController.getAUser);
+
 export const userRoute = route;

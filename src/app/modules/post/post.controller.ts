@@ -27,6 +27,18 @@ const getAPost: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const getAUserPost: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const data = await postService.getAUserPostDB(id);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'retrieved post successfully',
+    data,
+  });
+});
+
 const createPost: RequestHandler = catchAsync(async (req, res) => {
   const payload = req.body;
   const id = req.user.id;
@@ -126,5 +138,6 @@ export const postController = {
   dislikeAPost,
   followUser,
   deleteMyPost,
-  updateMyPost
+  updateMyPost,
+  getAUserPost,
 };

@@ -13,6 +13,11 @@ const getAPostDB = async (id: string) => {
   return findData;
 };
 
+const getAUserPostDB = async (id: string) => {
+  const findData = await post.find({ user: id }).sort('-createdAt');
+  return findData;
+};
+
 const createPostDB = async (payload: TPostData, id: string) => {
   const data = { ...payload, user: id };
   const newPost = await post.create(data);
@@ -109,6 +114,7 @@ const getMyPostDB = async (id: string) => {
 export const postService = {
   getAllPostDB,
   getAPostDB,
+  getAUserPostDB,
   createPostDB,
   likeAPostDB,
   deleteMyPostDB,
