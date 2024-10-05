@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { postController } from './post.controller';
 import validateRequest from '../../middlewares/validateRequest';
-import { createPostSchemaValidation } from './post.validation';
+import { createPostSchemaValidation, updatePostSchemaValidation } from './post.validation';
 import auth from '../../middlewares/auth';
 import { userRole } from '../../const/user';
 
@@ -15,7 +15,7 @@ router.get('/:id', auth(), postController.getAPost);
 
 router.delete('/my-post/:id', auth(), postController.deleteMyPost);
 
-router.put('/my-post/:id', auth(), validateRequest(createPostSchemaValidation), postController.updateMyPost);
+router.put('/my-post/:id', auth(), validateRequest(updatePostSchemaValidation), postController.updateMyPost);
 
 router.post('/like/:id', auth(), postController.likeAPost);
 

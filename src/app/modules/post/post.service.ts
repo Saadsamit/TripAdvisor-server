@@ -1,3 +1,5 @@
+import AppError from '../../errors/AppError';
+import comment from '../comments/comments.model';
 import user from '../user/user.modal';
 import { TPostData } from './post.interface';
 import post from './post.model';
@@ -13,11 +15,18 @@ const getAPostDB = async (id: string) => {
 
 const createPostDB = async (payload: TPostData, id: string) => {
   const data = { ...payload, user: id };
-  const newPost = new post(data);
+  const newPost = await post.create(data);
+
+  await comment.create({
+    _id: newPost?.comments,
+    postUser: id,
+    postId: newPost?._id,
+    comments: [],
+  });
 
   await user.findByIdAndUpdate(id, { $inc: { posts: 1 } });
 
-  return await newPost.save();
+  return newPost;
 };
 
 const updatePostDB = async (payload: TPostData, id: string) => {
@@ -25,7 +34,12 @@ const updatePostDB = async (payload: TPostData, id: string) => {
 };
 
 const deleteMyPostDB = async (id: string, userId: string) => {
+  const isExist = await post.findById(id);
+  if (!isExist) {
+    throw new AppError(404, 'post not found');
+  }
   await user.findByIdAndUpdate(userId, { $inc: { posts: -1 } });
+  await comment.findOneAndDelete({ postId: isExist?._id });
   return await post.findByIdAndDelete(id);
 };
 
@@ -89,7 +103,7 @@ const followUserDB = async (followerId: string, followingId: string) => {
 };
 
 const getMyPostDB = async (id: string) => {
-  return await post.find({ user: id });
+  return await post.find({ user: id }).sort('-createdAt');
 };
 
 export const postService = {
@@ -101,5 +115,5 @@ export const postService = {
   getMyPostDB,
   dislikeAPostDB,
   followUserDB,
-  updatePostDB
+  updatePostDB,
 };

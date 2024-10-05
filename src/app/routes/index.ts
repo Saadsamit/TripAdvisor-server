@@ -4,6 +4,7 @@ import { teamRoutes } from '../modules/Teams/team.routes';
 import { postRoutes } from '../modules/post/post.route';
 import { authRoute } from '../modules/auth/auth.route';
 import { userRoute } from '../modules/user/user.route';
+import { commentRoutes } from '../modules/comments/comments.route';
 
 const router = Router();
 
@@ -27,6 +28,10 @@ const moduleRoutes = [
   {
     path: '/post',
     route: postRoutes,
+  },
+  {
+    path: '/comments',
+    route: commentRoutes,
   },
 ];
 
