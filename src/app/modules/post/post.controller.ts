@@ -5,13 +5,13 @@ import httpStatus from 'http-status';
 import { postService } from './post.service';
 
 const getAllPost: RequestHandler = catchAsync(async (req, res) => {
-  const data = await postService.getAllPostDB();
+  const data = await postService.getAllPostDB(req);
 
   sendResponse(res, {
-    success: data.length ? true : false,
-    statusCode: data.length ? httpStatus.OK : httpStatus.NOT_FOUND,
-    message: data.length ? 'retrieved posts successfully' : 'post not found',
-    data,
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'retrieved posts successfully',
+    ...data,
   });
 });
 

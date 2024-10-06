@@ -1,11 +1,93 @@
+import { Request } from 'express';
 import AppError from '../../errors/AppError';
 import comment from '../comments/comments.model';
 import user from '../user/user.modal';
 import { TPostData } from './post.interface';
 import post from './post.model';
+import { PipelineStage } from 'mongoose';
 
-const getAllPostDB = async () => {
-  return await post.find().populate('user');
+const getAllPostDB = async (req: Request) => {
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+  const categoryQuery = req?.query?.category;
+  const sortQuery = req?.query?.sort;
+  const pipeline: PipelineStage[] = [];
+
+  if (categoryQuery) {
+    pipeline.push({
+      $match: {
+        category: categoryQuery,
+      },
+    });
+  }
+
+  pipeline.push({
+    $lookup: {
+      from: 'users',
+      localField: 'user',
+      foreignField: '_id',
+      as: 'userDetails',
+    },
+  });
+
+  pipeline.push({
+    $unwind: {
+      path: '$userDetails',
+      preserveNullAndEmptyArrays: true,
+    },
+  });
+
+  pipeline.push({
+    $project: {
+      _id: 1,
+      post: 1,
+      category: 1,
+      comment: 1,
+      downvote: 1,
+      upvote: 1,
+      createdAt: 1,
+      upvoteCount: { $size: '$upvote' },
+      user: {
+        _id: '$userDetails._id',
+        email: '$userDetails.email',
+        name: '$userDetails.name',
+        picture: '$userDetails.picture',
+        role: '$userDetails.role',
+        verified: '$userDetails.verified',
+        posts: '$userDetails.posts',
+        followers: '$userDetails.followers',
+        following: '$userDetails.following',
+      },
+    },
+  });
+
+  if (sortQuery) {
+    pipeline.push({
+      $sort: {
+        upvoteCount: -1,
+      },
+    });
+  } else {
+    pipeline.push({
+      $sort: {
+        createdAt: -1,
+      },
+    });
+  }
+
+  pipeline.push({
+    $skip: (page - 1) * limit,
+  });
+
+  pipeline.push({
+    $limit: limit,
+  });
+  const findData = await post.aggregate(pipeline);
+
+  const totalItems = await post.countDocuments();
+  const totalPages = Math.ceil(totalItems / limit);
+
+  return { data: findData, totalPages, currentPage: page };
 };
 
 const getAPostDB = async (id: string) => {
