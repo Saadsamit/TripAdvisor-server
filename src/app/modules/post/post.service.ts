@@ -26,38 +26,20 @@ const getAllPostDB = async (req: Request) => {
       from: 'users',
       localField: 'user',
       foreignField: '_id',
-      as: 'userDetails',
+      as: 'user',
     },
   });
 
   pipeline.push({
     $unwind: {
-      path: '$userDetails',
+      path: '$user',
       preserveNullAndEmptyArrays: true,
     },
   });
 
   pipeline.push({
-    $project: {
-      _id: 1,
-      post: 1,
-      category: 1,
-      comment: 1,
-      downvote: 1,
-      upvote: 1,
-      createdAt: 1,
+    $addFields: {
       upvoteCount: { $size: '$upvote' },
-      user: {
-        _id: '$userDetails._id',
-        email: '$userDetails.email',
-        name: '$userDetails.name',
-        picture: '$userDetails.picture',
-        role: '$userDetails.role',
-        verified: '$userDetails.verified',
-        posts: '$userDetails.posts',
-        followers: '$userDetails.followers',
-        following: '$userDetails.following',
-      },
     },
   });
 

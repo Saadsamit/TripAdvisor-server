@@ -10,7 +10,7 @@ const myAccount = catchAsync(async (req: Request, res: Response) => {
     success: true,
     statusCode: 200,
     message: 'User get successfully',
-    data: data,
+    ...data,
   });
 });
 
