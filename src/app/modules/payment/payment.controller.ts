@@ -7,13 +7,35 @@ import config from '../../config';
 import payment from './payment.model';
 import user from '../user/user.modal';
 
-const prifileVerified: RequestHandler = catchAsync(async (req, res) => {
-  const data = await paymentService.prifileVerifiedDB(req);
+const profileVerified: RequestHandler = catchAsync(async (req, res) => {
+  const data = await paymentService.profileVerifiedDB(req);
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'prifile verified successfully',
+    message: 'profile verified successfully',
+    data,
+  });
+});
+
+const getAllPayment: RequestHandler = catchAsync(async (req, res) => {
+  const data = await paymentService.getAllPaymentDB();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'retrieved all Payments successfully',
+    data,
+  });
+});
+
+const myPayment: RequestHandler = catchAsync(async (req, res) => {
+  const data = await paymentService.myPaymentDB(req);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'retrieved my all Payments successfully',
     data,
   });
 });
@@ -63,8 +85,10 @@ const failPayment: RequestHandler = async (req, res, next) => {
 };
 
 const paymentController = {
-  prifileVerified,
+  profileVerified,
+  getAllPayment,
   confirmPayment,
+  myPayment,
   failPayment,
 };
 

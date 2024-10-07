@@ -4,8 +4,9 @@ import AppError from '../../errors/AppError';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import config from '../../config';
+import payment from './payment.model';
 
-const prifileVerifiedDB = async (req: Request) => {
+const profileVerifiedDB = async (req: Request) => {
   const tran_id = uuidv4();
   const price = 200;
   try {
@@ -50,8 +51,19 @@ const prifileVerifiedDB = async (req: Request) => {
   }
 };
 
+const getAllPaymentDB = async () => {
+  return payment.find().sort('-createdAt');
+};
+
+const myPaymentDB = async (req: Request) => {
+  const id = req.user.id;
+  return payment.find({ user: id, status: 'success' }).sort('-createdAt');
+};
+
 const paymentService = {
-  prifileVerifiedDB,
+  profileVerifiedDB,
+  myPaymentDB,
+  getAllPaymentDB,
 };
 
 export default paymentService;

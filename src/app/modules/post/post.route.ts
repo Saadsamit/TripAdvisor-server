@@ -6,13 +6,12 @@ import {
   updatePostSchemaValidation,
 } from './post.validation';
 import auth from '../../middlewares/auth';
-import { userRole } from '../../const/user';
 
 const router = Router();
 
 router.get('/', postController.getAllPost);
 
-router.get('/my-posts', auth(userRole.user), postController.getMyPost);
+router.get('/my-posts', auth(), postController.getMyPost);
 
 router.get('/:id', auth(), postController.getAPost);
 
@@ -35,7 +34,7 @@ router.post('/follow/:followerId', auth(), postController.followUser);
 
 router.post(
   '/create',
-  auth(userRole.user),
+  auth(),
   validateRequest(createPostSchemaValidation),
   postController.createPost,
 );

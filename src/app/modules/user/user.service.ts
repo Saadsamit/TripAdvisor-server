@@ -25,7 +25,30 @@ const myAccountDB = async (req: Request) => {
   ]);
 
   const result = await user.findOne({ email });
-  return { data: result, upvoteData: upvoteData.length > 0 ? upvoteData[0] : null };
+  return {
+    data: result,
+    upvoteData: upvoteData.length > 0 ? upvoteData[0] : null,
+  };
+};
+
+const myFollowersDB = async (req: Request) => {
+  const id = req.user?.id;
+  const isExist = await user.findById(id);
+
+  const result = await user.find({
+    _id: { $in: isExist?.followers },
+  });
+  return result;
+};
+
+const myFollowingDB = async (req: Request) => {
+  const id = req.user?.id;
+  const isExist = await user.findById(id);
+
+  const result = await user.find({
+    _id: { $in: isExist?.following },
+  });
+  return result;
 };
 
 const allUserDB = async () => {
@@ -42,5 +65,7 @@ const getAUserDB = async (req: Request) => {
 export const userService = {
   myAccountDB,
   allUserDB,
+  myFollowingDB,
+  myFollowersDB,
   getAUserDB,
 };

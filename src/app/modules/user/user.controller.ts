@@ -14,6 +14,28 @@ const myAccount = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const myFollowers = catchAsync(async (req: Request, res: Response) => {
+  const data = await userService.myFollowersDB(req);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: 'User get successfully',
+    data,
+  });
+});
+
+const myFollowing = catchAsync(async (req: Request, res: Response) => {
+  const data = await userService.myFollowingDB(req);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: 'User get successfully',
+    data,
+  });
+});
+
 const allUser = catchAsync(async (req: Request, res: Response) => {
   const data = await userService.allUserDB();
 
@@ -39,5 +61,7 @@ const getAUser = catchAsync(async (req: Request, res: Response) => {
 export const userController = {
   myAccount,
   allUser,
+  myFollowers,
+  myFollowing,
   getAUser,
 };
