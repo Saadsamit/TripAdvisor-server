@@ -5,7 +5,7 @@ import httpStatus from 'http-status';
 import { categoryService } from './category.service';
 
 const getAllCategory: RequestHandler = catchAsync(async (req, res) => {
-  const data = await categoryService.getAllCategoryDB();
+  const data = await categoryService.getAllCategoryDB(req);
 
   sendResponse(res, {
     success: data.length ? true : false,
