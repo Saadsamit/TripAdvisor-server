@@ -56,7 +56,7 @@ const failPayment: RequestHandler = async (req, res, next) => {
       await payment.findByIdAndUpdate(isExist?._id, { status });
     }
 
-    res.redirect(`${config.client_url}/profile`);
+    res.redirect(`${config.client_url}/payment/fail`);
   } catch (err) {
     next(err);
   }
