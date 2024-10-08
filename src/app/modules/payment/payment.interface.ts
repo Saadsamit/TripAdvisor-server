@@ -4,5 +4,5 @@ export type TPayment = {
   user: Types.ObjectId;
   tranId: string;
   price: number;
-  status: 'success' | 'failed' | 'canceled';
+  status: 'success' | 'failed';
 };

@@ -9,8 +9,8 @@ const paymentSchema = new Schema<TPayment>({
   },
   status: {
     type: String,
-      enum: ['success', 'failed', 'canceled'],
-      required: true,
+    enum: ['success', 'failed'],
+    required: true,
   },
   price: {
     type: Number,

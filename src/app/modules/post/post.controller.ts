@@ -78,6 +78,18 @@ const deleteMyPost: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const deleteById: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const data = await postService.deleteByIdDB(id);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'post deleted successfully',
+    data,
+  });
+});
+
 const likeAPost: RequestHandler = catchAsync(async (req, res) => {
   const id = req.params.id;
   const userId = req.user.id;
@@ -137,6 +149,7 @@ export const postController = {
   getMyPost,
   dislikeAPost,
   followUser,
+  deleteById,
   deleteMyPost,
   updateMyPost,
   getAUserPost,

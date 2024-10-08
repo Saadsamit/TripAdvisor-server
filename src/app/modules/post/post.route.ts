@@ -6,10 +6,11 @@ import {
   updatePostSchemaValidation,
 } from './post.validation';
 import auth from '../../middlewares/auth';
+import { userRole } from '../../const/user';
 
 const router = Router();
 
-router.get('/', postController.getAllPost);
+router.get('/', auth(), postController.getAllPost);
 
 router.get('/my-posts', auth(), postController.getMyPost);
 
@@ -18,6 +19,8 @@ router.get('/:id', auth(), postController.getAPost);
 router.get('/user/:id', auth(), postController.getAUserPost);
 
 router.delete('/my-post/:id', auth(), postController.deleteMyPost);
+
+router.delete('/:id', auth(userRole.admin), postController.deleteById);
 
 router.put(
   '/my-post/:id',

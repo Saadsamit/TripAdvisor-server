@@ -52,7 +52,7 @@ const profileVerifiedDB = async (req: Request) => {
 };
 
 const getAllPaymentDB = async () => {
-  return payment.find().sort('-createdAt');
+  return payment.find({status: "success"}).populate('user').sort('-createdAt');
 };
 
 const myPaymentDB = async (req: Request) => {

@@ -23,7 +23,7 @@ route.post(
   authController.login,
 );
 
-route.put('/roleUpdate/:id', auth(userRole.admin), authController.roleUpdate);
+route.put('/role-update/:id', auth(userRole.admin), authController.roleUpdate);
 
 route.patch(
   '/update-profile',
@@ -33,3 +33,5 @@ route.patch(
 );
 
 export const authRoute = route;
+
+

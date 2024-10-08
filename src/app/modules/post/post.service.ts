@@ -9,6 +9,7 @@ import { PipelineStage } from 'mongoose';
 const getAllPostDB = async (req: Request) => {
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 10;
+  const all = Boolean(req.query?.all);
   const categoryQuery = req?.query?.category;
   const sortQuery = req?.query?.sort;
   const pipeline: PipelineStage[] = [];
@@ -56,14 +57,16 @@ const getAllPostDB = async (req: Request) => {
       },
     });
   }
+  if (!all) {
+    pipeline.push({
+      $skip: (page - 1) * limit,
+    });
 
-  pipeline.push({
-    $skip: (page - 1) * limit,
-  });
+    pipeline.push({
+      $limit: limit,
+    });
+  }
 
-  pipeline.push({
-    $limit: limit,
-  });
   const findData = await post.aggregate(pipeline);
 
   const totalItems = await post.countDocuments();
@@ -110,6 +113,16 @@ const deleteMyPostDB = async (id: string, userId: string) => {
   await user.findByIdAndUpdate(userId, { $inc: { posts: -1 } });
   await comment.findOneAndDelete({ postId: isExist?._id });
   return await post.findByIdAndDelete(id);
+};
+
+const deleteByIdDB = async (id: string) => {
+  const isExist = await post.findById(id);
+  if (!isExist) {
+    throw new AppError(404, 'post not found');
+  }
+  await user.findByIdAndUpdate(isExist?.user, { $inc: { posts: -1 } });
+  await comment.findOneAndDelete({ postId: isExist?._id });
+  return await post.findByIdAndDelete(isExist?._id);
 };
 
 const likeAPostDB = async (id: string, userId: string) => {
@@ -184,6 +197,7 @@ export const postService = {
   deleteMyPostDB,
   getMyPostDB,
   dislikeAPostDB,
+  deleteByIdDB,
   followUserDB,
   updatePostDB,
 };
